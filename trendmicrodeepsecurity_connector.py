@@ -185,41 +185,6 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         self.save_progress(response)
         return action_result.set_status(phantom.APP_SUCCESS, response)
 
-    def _handle_getwebevents(self, param):
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
-
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        acc = param['accountname']
-        uname = param['username']
-        pas = param['passwd']
-
-        loginURL = self._base_url + '/authentication/login'
-        payload = {'dsCredentials': {"tenantName": acc, "userName": uname, "password": pas}}
-        x = requests.post(loginURL, json=payload)
-        # print(x.text)
-        sd = x.text
-        # ret_val, response = self._make_rest_call('/events/antimalware', action_result, params={'sID': sd})
-        url = 'https://app.deepsecurity.trendmicro.com/rest/events/webreputation'
-        response = requests.get(url, params={'sID': sd})
-        re = response.json()
-        re = json.dumps(re)
-        # print(response.__dict__)
-        url2 = 'https://app.deepsecurity.trendmicro.com/rest/authentication/logout'
-        g = requests.delete(url2, params={'sID': sd})
-
-        action_result.add_data(response.json())
-
-        # Add a dictionary that is made up of the most important values from data into the summary
-        summary = action_result.update_summary({})
-        summary['events'] = response.json()
-
-        # Return success, no need to set the message, only the status
-        # BaseConnector will create a textual message based off of the summary dictionary
-        return action_result.set_status(phantom.APP_SUCCESS, x.text + " " + g.text + " " + acc + " " + uname + pas + "     nenenenen     " + self._base_url)
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        return action_result.set_status(phantom.APP_ERROR, "Action not yet implemented")
-
     def _login(self, param, action_result):
         """
         This function logs into DS manager with given credentials and gets the session ID.
@@ -249,6 +214,53 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         return response
+
+    def _handle_getwebevents(self, param):
+        """
+        This function returns all web reputation events.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+
+        # API call to get all web reputation events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/events/antimalware', action_result=action_result, method='get', params={'sID': sid})
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp)
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
 
     def _handle_getevents(self, param):
         """
