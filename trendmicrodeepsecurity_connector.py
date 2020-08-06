@@ -85,10 +85,10 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # Please specify the status codes here
         if 200 <= r.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
-
+        self.save_progress("Sem pred message error")
         # You should process the error returned in the json
         message = "Error from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code,
+            r.__dict__,
             r.text.replace(u'{', '{{').replace(u'}', '}}')
         )
 
@@ -136,10 +136,10 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
-    def _make_rest_call(self, endpoint, action_result, method="get", **kwargs):
+    def _make_rest_call(self, endpoint, action_result, method="get", data=None, params=None, cookie=None):
         # **kwargs can be any additional parameters that requests.request accepts
 
-        config = self.get_config()
+        # config = self.get_config()
 
         resp_json = None
         self.save_progress("Sem pred get attr")
@@ -152,16 +152,12 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
             )
         # Create a URL to connect to
         self.save_progress("Sem po get attr")
-        url = 'https://app.deepsecurity.trendmicro.com/rest' + endpoint
+        url = self._base_url + endpoint
         self.save_progress("PRed request_func")
         try:
-            r = request_func(
-                url,
-                # auth=(username, password),  # basic authentication
-                verify=config.get('verify_server_cert', False),
-                **kwargs
-            )
+            r = request_func(url, json=data, params=params, cookies=cookie)
         except Exception as e:
+            self.save_progress("Error")
             return RetVal(
                 action_result.set_status(
                     phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(e))
@@ -224,59 +220,81 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # For now return Error with a message, in case of success we don't set the message, but use the summary
         return action_result.set_status(phantom.APP_ERROR, "Action not yet implemented")
 
+    def _login(self, param, action_result):
+        """
+        This function logs into DS manager with given credentials and gets the session ID.
+        """
+
+        # Filling the payload wth credentials. These are the values that user inputs in Phantom.
+        payload = {'dsCredentials': {"tenantName": param['accountname'], "userName": param['username'], "password": param['passwd']}}
+
+        # Making the API call
+        ret_val, response = self._make_rest_call(endpoint='/authentication/login', action_result=action_result, method='post', data=payload)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Return sID
+        return response
+
+    def _logout(self, param, action_result, sid):
+        """
+        This function deletes the session.
+        """
+
+        # Making the API call.
+        ret_val, response = self._make_rest_call(endpoint='/authentication/logout', action_result=action_result, method='delete', params={'sID': sid})
+
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        return response
+
     def _handle_getevents(self, param):
-        # Implement the handler here
+        """
+        This function returns all antimalware events.
+        """
         # use self.save_progress(...) to send progress messages back to the platform
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Access action parameters passed in the 'param' dictionary
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
 
-        # Required values can be accessed directly
-        # required_parameter = "Bla"
-        acc = param['accountname']
-        uname = param['username']
-        pas = param['passwd']
-        # Optional values should use the .get() function
-        # optional_parameter = param.get('optional_parameter', 'default_value')
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
 
-        # make rest call
-        loginURL = 'https://app.deepsecurity.trendmicro.com/rest/authentication/login'
-        payload = {'dsCredentials': {"tenantName": acc, "userName": uname, "password": pas}}
-        x = requests.post(loginURL, json=payload)
-        # print(x.text)
-        sd = x.text
-        # ret_val, response = self._make_rest_call('/events/antimalware', action_result, params={'sID': sd})
-        url = 'https://app.deepsecurity.trendmicro.com/rest/events/antimalware'
-        response = requests.get(url, params={'sID': sd})
-        re = response.json()
-        re = json.dumps(re)
-        # print(response.__dict__)
-        url2 = 'https://app.deepsecurity.trendmicro.com/rest/authentication/logout'
-        g = requests.delete(url2, params={'sID': sd})
-        # print(g.text)
-        # if phantom.is_fail(ret_val):
-        # the call to the 3rd party device or service failed, action result should contain all the error details
-        # for now the return is commented out, but after implementation, return from here
-        # return action_result.get_status()
-        # pass
+        self.save_progress(sid)
 
-        # Now post process the data,  uncomment code as you deem fit
+        # API call to get all antimalware events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/events/antimalware', action_result=action_result, method='get', params={'sID': sid})
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
 
         # Add the response into the data section
-        action_result.add_data(response.json())
+        action_result.add_data(response)
 
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary['events'] = response.json()
+        summary['events'] = sid
 
         # Return success, no need to set the message, only the status
         # BaseConnector will create a textual message based off of the summary dictionary
-        return action_result.set_status(phantom.APP_SUCCESS, x.text + " " + g.text + " " + acc + " " + uname + pas + "     nenenenen     " + self._base_url)
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        return action_result.set_status(phantom.APP_ERROR, "Action not yet implemented")
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
