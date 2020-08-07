@@ -210,7 +210,11 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "webev_view.display_wev",
+                "title": "Display events"
             },
             "versions": "EQ(*)"
         }, 
@@ -295,7 +299,11 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "alerts_view.display_alerts",
+                "title": "Display alerts"
             },
             "versions": "EQ(*)"
         }   

@@ -20,8 +20,8 @@
   {% for result in results %} <!-- loop for each result -->
 <br>
 
-     {% for data  in result.data.antiMalwareEventListing.events %}
-       <p style="font-size:15px;color: white"> Anti Malware Event </p>
+     {% for data  in result.data.ListAlertsResponse.alerts %}
+       <p style="font-size:15px;color: white"> Alert </p>
        <table>
        {% for key, dt in data.items %}
        {% if dt|length != 0 %}

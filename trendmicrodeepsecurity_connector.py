@@ -236,7 +236,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         self.save_progress(sid)
 
         # API call to get all web reputation events from the DS manager
-        ret_val, response = self._make_rest_call(endpoint='/events/antimalware', action_result=action_result, method='get', params={'sID': sid})
+        ret_val, response = self._make_rest_call(endpoint='/events/webreputation', action_result=action_result, method='get', params={'sID': sid})
 
         # If the call fails
         if phantom.is_fail(ret_val):
