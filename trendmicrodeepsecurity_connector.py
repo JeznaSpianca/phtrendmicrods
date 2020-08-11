@@ -354,6 +354,55 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, sid)
 
+    def _handle_getevtime(self, param):
+        """
+        This function returns all antimalware events after specified time.
+        """
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        time = param['logt']
+        self.save_progress("SSASDASADASDASD" + str(time))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+        payload = {'eventTime': time, 'eventTimeOp': 'gt', 'sID': sid}
+        # API call to get all antimalware events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/events/antimalware', action_result=action_result, method='get', params=payload)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
+
     def _handle_getevents(self, param):
         """
         This function returns all antimalware events.
@@ -422,6 +471,9 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         elif action_id == 'getimevents':
             ret_val = self._handle_getimevents(param)
+
+        elif action_id == 'getevtime':
+            ret_val = self._handle_getevtime(param)
 
         return ret_val
 

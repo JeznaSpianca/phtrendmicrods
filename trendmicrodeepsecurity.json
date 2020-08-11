@@ -130,6 +130,92 @@
             "versions": "EQ(*)"
         },
         {
+            "action": "getevtime",
+            "identifier": "getevtime",
+            "description": "Gets antimalware events from DS manager from the specified time.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
             "action": "getwebevents",
             "identifier": "getwebevents",
             "description": "Gets web reputation events from DS manager.",
