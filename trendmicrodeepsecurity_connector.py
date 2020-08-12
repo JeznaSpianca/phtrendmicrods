@@ -403,6 +403,52 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, sid)
 
+    def _handle_list_alert_types(self, param):
+        """
+        This function lists all alert types.
+        """
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+
+        # API call to get all antimalware events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/alert-types', action_result=action_result, method='get', cookie={'sID': sid})
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
+
     def _handle_getevents(self, param):
         """
         This function returns all antimalware events.
@@ -449,6 +495,153 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, sid)
 
+    def _handle_describe_alert_type(self, param):
+        """
+        Describes an alert type.
+        """
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+
+        # API call to get all antimalware events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/alert-types/' + str(param['alertid']), action_result=action_result, method='get', cookie={'sID': sid})
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
+
+    def _handle_modify_alert_type(self, param):
+        """
+        Modifies an alert type.
+        """
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+        payload = {"ModifyAlertTypeRequest": {"alertType": {}}}
+        self.save_progress(json.dumps(param))
+        for key, value in param.items():
+            self.save_progress(key)
+            if key == 'accountname' or key == 'username' or key == 'passwd' or key == 'context':
+                continue
+            if key == 'alertid':
+                key = 'id'
+            payload['ModifyAlertTypeRequest']['alertType'][key] = value
+        self.save_progress(json.dumps(payload))
+        # API call to get all antimalware events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/alert-types/' + str(param['alertid']), action_result=action_result, method='post', cookie={'sID': sid}, data=payload)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
+
+    def _handle_reset_alert_type(self, param):
+        """
+        Resets an alert type to default values.
+        """
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+        aid = param['alertid']
+        self.save_progress(self._base_url + '/alert-types/' + str(aid))
+        # API call to get all antimalware events from the DS manager
+        r = requests.delete(self._base_url + '/alert-types/' + str(aid), cookies={'sID': sid})
+        ab = r.status_code
+        if ab >= 400:
+            return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
+
+        # Add the response into the data section
+        # action_result.add_data(r.__dict__)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
+
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
 
@@ -474,6 +667,18 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         elif action_id == 'getevtime':
             ret_val = self._handle_getevtime(param)
+
+        elif action_id == 'list_alert_types':
+            ret_val = self._handle_list_alert_types(param)
+
+        elif action_id == 'reset_alert_type':
+            ret_val = self._handle_reset_alert_type(param)
+
+        elif action_id == 'describe_alert_type':
+            ret_val = self._handle_describe_alert_type(param)
+
+        elif action_id == 'modify_alert_type':
+            ret_val = self._handle_modify_alert_type(param)
 
         return ret_val
 

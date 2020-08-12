@@ -478,6 +478,554 @@
                 "type": "table"
             },
             "versions": "EQ(*)"
+        },
+        {
+            "action": "list_alert_types",
+            "identifier": "list_alert_types",
+            "description": "List alert types.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "reset_alert_type",
+            "identifier": "reset_alert_type",
+            "description": "Resets an alert type to defaults",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "alertid": {
+                    "description": "Alert type ID to reset",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.alertid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "alertid",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "describe_alert_type",
+            "identifier": "describe_alert_type",
+            "description": "Describes an alert type",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "alertid": {
+                    "description": "Alert type ID to describe",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.alertid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "alertid",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "modify_alert_type",
+            "identifier": "modify_alert_type",
+            "description": "Modifies an alert type",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "alertid": {
+                    "description": "Alert type ID to describe",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "name": {
+                    "description": "Alert type name",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "description": {
+                    "description": "Alert type description",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "dismissible": {
+                    "description": "Is the alert type dismissible",
+                    "data_type": "boolean",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "enabled": {
+                    "description": "Is the alert type enabled",
+                    "data_type": "boolean",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "severity": {
+                    "description": "Alert type severity",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "notifyStart": {
+                    "description": "Notify start",
+                    "data_type": "boolean",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "notifyChange": {
+                    "description": "Notify change",
+                    "data_type": "boolean",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "notifyEnd": {
+                    "description": "Notify end",
+                    "data_type": "boolean",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "alertAlways": {
+                    "description": "Alert always",
+                    "data_type": "boolean",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.alertid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "alertid",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.name",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "name",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "description",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.dismissible",
+                    "data_type": "boolean",
+                    "contains": [],
+                    "column_name": "dismissible",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.enabled",
+                    "data_type": "boolean",
+                    "contains": [],
+                    "column_name": "enabled",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.severity",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "severity",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.notifyStart",
+                    "data_type": "boolean",
+                    "contains": [],
+                    "column_name": "notifyStart",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.notifyChange",
+                    "data_type": "boolean",
+                    "contains": [],
+                    "column_name": "notifyChange",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.notifyEnd",
+                    "data_type": "boolean",
+                    "contains": [],
+                    "column_name": "notifyEnd",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.alertAlways",
+                    "data_type": "boolean",
+                    "contains": [],
+                    "column_name": "alertAlways",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
         }
     ]
 }
