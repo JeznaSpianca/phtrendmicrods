@@ -669,6 +669,229 @@
             "versions": "EQ(*)"
         },
         {
+            "action": "describe_alert",
+            "identifier": "describe_alert",
+            "description": "Describe an alert",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "alertid": {
+                    "description": "Alert ID to describe",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.alertid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "alertid",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "dismiss_alert_one_target",
+            "identifier": "dismiss_alert_one_target",
+            "description": "Dismiss an alert on a single target",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "alertid": {
+                    "description": "Alert ID to dismiss",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "targetid": {
+                    "description": "Target ID to dismiss an alert on",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.alertid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "alertid",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.targetid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "alertid",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
             "action": "dismiss_alert",
             "identifier": "dismiss_alert",
             "description": "Dismiss an alert",
@@ -707,7 +930,7 @@
                     "order": 2
                 },
                 "alertid": {
-                    "description": "Alert type ID to dismiss",
+                    "description": "Alert ID to dismiss",
                     "data_type": "numeric",
                     "required": true,
                     "primary": true,
