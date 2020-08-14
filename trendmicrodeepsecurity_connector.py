@@ -37,7 +37,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # Variable to hold a base_url in case the app makes REST calls
         # Do note that the app json defines the asset config, so please
         # modify this as you deem fit.
-        self._base_url = "https://app.deepsecurity.trendmicro.com/rest"
+        self._base_url = None
 
     def _process_empty_response(self, response, action_result):
         self.save_progress("Sem v process empty response")
@@ -166,6 +166,36 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         return self._process_response(r, action_result)
 
+    def _make_rest_call_new(self, endpoint, action_result, method="get", data=None, params=None, cookie=None, headers=None):
+        # **kwargs can be any additional parameters that requests.request accepts
+
+        # config = self.get_config()
+
+        resp_json = None
+        self.save_progress("Sem pred get attr")
+        try:
+            request_func = getattr(requests, method)
+        except AttributeError:
+            return RetVal(
+                action_result.set_status(phantom.APP_ERROR, "Invalid method: {0}".format(method)),
+                resp_json
+            )
+        # Create a URL to connect to
+        self.save_progress("Sem po get attr")
+        url = self._nebase_url + endpoint
+        self.save_progress("PRed request_func")
+        try:
+            r = request_func(url, json=data, params=params, cookies=cookie, headers=headers)
+        except Exception as e:
+            self.save_progress("Error")
+            return RetVal(
+                action_result.set_status(
+                    phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(e))
+                ), resp_json
+            )
+
+        return self._process_response(r, action_result)
+
     def _handle_test_connectivity(self, param):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -261,6 +291,123 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # Return success, no need to set the message, only the status
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, sid)
+
+    def _handle_listcomputers(self, param):
+        """
+        This function list all computers.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+        # API call to get all web reputation events from the DS manager
+        ret_val, response = self._make_rest_call_new(endpoint='/computers', action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
+
+    def _handle_get_comp_fw_rules(self, param):
+        """
+        This function list all firewall rules of a computer.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+        ep = '/computers/' + str(param['compid']) + '/firewall/rules'
+        # API call to get all web reputation events from the DS manager
+        ret_val, response = self._make_rest_call_new(endpoint=ep, action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
+
+    def _handle_list_comp_groups(self, param):
+        """
+        This function lists all computer groups.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+        # API call to get all web reputation events from the DS manager
+        ret_val, response = self._make_rest_call_new(endpoint='/computergroups', action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
+
+    def _handle_listpolicies(self, param):
+        """
+        This function list all policies
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+        # API call to get all web reputation events from the DS manager
+        ret_val, response = self._make_rest_call_new(endpoint='/policies', action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
 
     def _handle_getalerts(self, param):
         """
@@ -366,7 +513,6 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Calling the login function to get session id
         sid = self._login(param, action_result)
-
         # If the login function fails
         if phantom.is_fail(sid):
            return action_result.get_status()
@@ -381,6 +527,55 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         self.save_progress(json.dumps(payload))
         # API call to get all antimalware events from the DS manager
         ret_val, response = self._make_rest_call(endpoint='/reports', action_result=action_result, method='get', params=payload, cookie={'sID': sid})
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Calling the logout function
+        resp = self._logout(param, action_result, sid)
+
+        # If the logout function fails
+        if phantom.is_fail(resp):
+           return action_result.get_status()
+
+        self.save_progress(resp + "NENE")
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = sid
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, sid)
+
+    def _handle_getwevtime(self, param):
+        """
+        This function returns all antimalware events after specified time.
+        """
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        time = param['logt']
+        self.save_progress("SSASDASADASDASD" + str(time))
+
+        # Calling the login function to get session id
+        sid = self._login(param, action_result)
+
+        # If the login function fails
+        if phantom.is_fail(sid):
+           return action_result.get_status()
+
+        self.save_progress(sid)
+        payload = {'eventTime': time, 'eventTimeOp': 'gt', 'sID': sid}
+        # API call to get all antimalware events from the DS manager
+        ret_val, response = self._make_rest_call(endpoint='/events/webreputation', action_result=action_result, method='get', params=payload)
 
         # If the call fails
         if phantom.is_fail(ret_val):
@@ -921,6 +1116,36 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, sid)
 
+    def _handle_describe_computer(self, param):
+        """
+        This function describes a computer.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+        ep = '/computers/' + str(param['compid'])
+        # API call to get all web reputation events from the DS manager
+        ret_val, response = self._make_rest_call_new(endpoint=ep, action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
+
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
 
@@ -977,6 +1202,24 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         elif action_id == 'list_report_templates':
             ret_val = self._handle_list_report_templates(param)
 
+        elif action_id == 'listpolicies':
+            ret_val = self._handle_listpolicies(param)
+
+        elif action_id == 'listcomputers':
+            ret_val = self._handle_listcomputers(param)
+
+        elif action_id == 'get_comp_fw_rules':
+            ret_val = self._handle_get_comp_fw_rules(param)
+
+        elif action_id == 'list_comp_groups':
+            ret_val = self._handle_list_comp_groups(param)
+
+        elif action_id == 'getwevtime':
+            ret_val = self._handle_getwevtime(param)
+
+        elif action_id == 'describe_computer':
+            ret_val = self._handle_describe_computer(param)
+
         return ret_val
 
     def initialize(self):
@@ -990,6 +1233,9 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Required values can be accessed directly
         self._base_url = config.get('baseURL')
+        self._nebase_url = config.get('baseURLnew')
+        self._auth_token = config.get('authtoken')
+        self._api_ver = config.get('newAPIversion')
 
         return phantom.APP_SUCCESS
 

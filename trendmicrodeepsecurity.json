@@ -19,11 +19,35 @@
     "app_wizard_version": "1.0.0",
     "configuration": {
         "baseURL": {
-            "description": "Osnovni URL za DS API",
+            "description": "Base URL for old DS REST API",
             "data_type": "string",
             "required": true,
             "value_list": [],
             "default": "https://app.deepsecurity.trendmicro.com/rest",
+            "order": 0
+        },
+        "authtoken": {
+            "description": "Authorization token for using new API",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "",
+            "order": 0
+        },
+        "baseURLnew": {
+            "description": "Base URL for the new DS API",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "https://app.deepsecurity.trendmicro.com/api",
+            "order": 0
+        },
+        "newAPIversion": {
+            "description": "New API version",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "v1",
             "order": 0
         }
     },
@@ -126,6 +150,336 @@
                 "height": 5,
                 "view": "event_view.display_events",
                 "title": "Display events"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "describe_computer",
+            "identifier": "describe_computer",
+            "description": "Describe a computer",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "compid": {
+                    "description": "Computer ID.",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.compid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get_comp_fw_rules",
+            "identifier": "get_comp_fw_rules",
+            "description": "List computers firewall rules.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "compid": {
+                    "description": "COmputer ID.",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.compid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list_comp_groups",
+            "identifier": "list_comp_groups",
+            "description": "List computer groups.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "listpolicies",
+            "identifier": "listpolicies",
+            "description": "Gets policies from DS manager.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "listcomputers",
+            "identifier": "listcomputers",
+            "description": "List computers.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "listpolicies",
+            "identifier": "listpolicies",
+            "description": "Gets policies from DS manager.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "getwevtime",
+            "identifier": "getwevtime",
+            "description": "Gets web events that happened after the specified time.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
             },
             "versions": "EQ(*)"
         },
