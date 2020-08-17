@@ -302,8 +302,10 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
+        # Preparing headers
         headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
-        # API call to get all web reputation events from the DS manager
+
+        # API call to list all computers
         ret_val, response = self._make_rest_call_new(endpoint='/computers', action_result=action_result, method='get', headers=headers)
 
         # If the call fails
@@ -331,9 +333,12 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Preparing headers and endpoint
         headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
         ep = '/computers/' + str(param['compid']) + '/firewall/rules'
-        # API call to get all web reputation events from the DS manager
+
+        # API call to get all computer fw rules
         ret_val, response = self._make_rest_call_new(endpoint=ep, action_result=action_result, method='get', headers=headers)
 
         # If the call fails
@@ -361,8 +366,11 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Preparing headers
         headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
-        # API call to get all web reputation events from the DS manager
+
+        # API call to lsit computer groups
         ret_val, response = self._make_rest_call_new(endpoint='/computergroups', action_result=action_result, method='get', headers=headers)
 
         # If the call fails
@@ -390,8 +398,11 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Preparing headers
         headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
-        # API call to get all web reputation events from the DS manager
+
+        # API call to list policies
         ret_val, response = self._make_rest_call_new(endpoint='/policies', action_result=action_result, method='get', headers=headers)
 
         # If the call fails
@@ -474,7 +485,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         self.save_progress(sid)
 
-        # API call to get all alerts
+        # API call to get all integrity monitoring events
         ret_val, response = self._make_rest_call(endpoint='/events/integrity', action_result=action_result, method='get', cookie={'sID': sid})
 
         # If the call fails
@@ -518,6 +529,8 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(str(len(param)))
+
+        # Preparing parameters
         payload = {}
         if len(param) != 4:
             for key, value in param.items():
@@ -525,7 +538,8 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         else:
             payload = None
         self.save_progress(json.dumps(payload))
-        # API call to get all antimalware events from the DS manager
+
+        # API call to list all report templates
         ret_val, response = self._make_rest_call(endpoint='/reports', action_result=action_result, method='get', params=payload, cookie={'sID': sid})
 
         # If the call fails
@@ -554,7 +568,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
     def _handle_getwevtime(self, param):
         """
-        This function returns all antimalware events after specified time.
+        This function returns all web reputation events after specified time.
         """
         # use self.save_progress(...) to send progress messages back to the platform
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
@@ -573,8 +587,10 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+        # Preparing parameters
         payload = {'eventTime': time, 'eventTimeOp': 'gt', 'sID': sid}
-        # API call to get all antimalware events from the DS manager
+
+        # API call to get all web reputation events after the specified time from the DS manager
         ret_val, response = self._make_rest_call(endpoint='/events/webreputation', action_result=action_result, method='get', params=payload)
 
         # If the call fails
@@ -622,8 +638,11 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+
+        # Preparing parameters
         payload = {'eventTime': time, 'eventTimeOp': 'gt', 'sID': sid}
-        # API call to get all antimalware events from the DS manager
+
+        # API call to get all antimalware events after the specified time from the DS manager
         ret_val, response = self._make_rest_call(endpoint='/events/antimalware', action_result=action_result, method='get', params=payload)
 
         # If the call fails
@@ -669,7 +688,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         self.save_progress(sid)
 
-        # API call to get all antimalware events from the DS manager
+        # API call to list all alert types
         ret_val, response = self._make_rest_call(endpoint='/alert-types', action_result=action_result, method='get', cookie={'sID': sid})
 
         # If the call fails
@@ -698,7 +717,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
     def _handle_list_event_based_tasks(self, param):
         """
-        This function lists event based taska
+        This function lists event based tasks
         """
         # use self.save_progress(...) to send progress messages back to the platform
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
@@ -715,7 +734,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         self.save_progress(sid)
 
-        # API call to get all antimalware events from the DS manager
+        # API call to list all event based tasks from the DS manager
         ret_val, response = self._make_rest_call(endpoint='/tasks/event-based', action_result=action_result, method='get', cookie={'sID': sid})
 
         # If the call fails
@@ -807,7 +826,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         self.save_progress(sid)
 
-        # API call to get all antimalware events from the DS manager
+        # API call to describe an alert type from the DS manager
         ret_val, response = self._make_rest_call(endpoint='/alert-types/' + str(param['alertid']), action_result=action_result, method='get', cookie={'sID': sid})
 
         # If the call fails
@@ -852,9 +871,12 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+        # Preparing link
         ep = self._base_url + '/tasks/event-based/' + str(param['eventid'])
-        # API call to get all antimalware events from the DS manager
+
+        # API call to delete event based task from the DS manager
         r = requests.delete(ep, cookies={'sID': sid})
+
         ab = r.status_code
         if ab >= 400:
             return action_result.set_status(phantom.APP_ERROR, ab)
@@ -897,8 +919,10 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+        # Preparing endpoint link
         ep = self._base_url + '/alerts/' + str(param['alertid']) + '/target/' + str(param['targetid'])
-        # API call to get all antimalware events from the DS manager
+
+        # API call to dismiss alert on one target in the DS manager
         r = requests.delete(ep, cookies={'sID': sid})
         ab = r.status_code
         if ab >= 400:
@@ -987,6 +1011,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+        # Preparing modification data
         payload = {"ModifyAlertTypeRequest": {"alertType": {}}}
         self.save_progress(json.dumps(param))
         for key, value in param.items():
@@ -997,7 +1022,8 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
                 key = 'id'
             payload['ModifyAlertTypeRequest']['alertType'][key] = value
         self.save_progress(json.dumps(payload))
-        # API call to get all antimalware events from the DS manager
+
+        # API call to modify an alert type on DS manager
         ret_val, response = self._make_rest_call(endpoint='/alert-types/' + str(param['alertid']), action_result=action_result, method='post', cookie={'sID': sid}, data=payload)
 
         # If the call fails
@@ -1042,9 +1068,11 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+        # Preparing parameters
         aid = param['alertid']
         self.save_progress(self._base_url + '/alerts/' + str(aid))
-        # API call to get all antimalware events from the DS manager
+
+        # API call to dismiss an alert
         r = requests.delete(self._base_url + '/alerts/' + str(aid), cookies={'sID': sid})
         ab = r.status_code
         if ab >= 400:
@@ -1088,9 +1116,11 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
            return action_result.get_status()
 
         self.save_progress(sid)
+        # Preparing parameters
         aid = param['alertid']
         self.save_progress(self._base_url + '/alert-types/' + str(aid))
-        # API call to get all antimalware events from the DS manager
+
+        # API call to reset alert type
         r = requests.delete(self._base_url + '/alert-types/' + str(aid), cookies={'sID': sid})
         ab = r.status_code
         if ab >= 400:
@@ -1126,9 +1156,12 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Preparing headers
         headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+
         ep = '/computers/' + str(param['compid'])
-        # API call to get all web reputation events from the DS manager
+        # API call to describe a computer
         ret_val, response = self._make_rest_call_new(endpoint=ep, action_result=action_result, method='get', headers=headers)
 
         # If the call fails
