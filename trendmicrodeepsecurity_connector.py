@@ -306,7 +306,7 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
 
         # API call to list all computers
-        ret_val, response = self._make_rest_call_new(endpoint='/computers', action_result=action_result, method='get', headers=headers)
+        ret_val, response = self._make_rest_call_new(endpoint='/computers', action_result=action_result, method='get', headers=headers, params={'expand': 'none'})
 
         # If the call fails
         if phantom.is_fail(ret_val):
@@ -339,6 +339,39 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         ep = '/computers/' + str(param['compid']) + '/firewall/rules'
 
         # API call to get all computer fw rules
+        ret_val, response = self._make_rest_call_new(endpoint=ep, action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
+
+    def _handle_describe_computer_setting(self, param):
+        """
+        This function describes a computer setting.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Preparing headers and ep
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+        ep = '/computers/' + str(param['compid']) + '/settings/' + param['setting']
+
+        # API call to lsit computer groups
         ret_val, response = self._make_rest_call_new(endpoint=ep, action_result=action_result, method='get', headers=headers)
 
         # If the call fails
@@ -1252,6 +1285,9 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
 
         elif action_id == 'describe_computer':
             ret_val = self._handle_describe_computer(param)
+
+        elif action_id == 'describe_computer_setting':
+            ret_val = self._handle_describe_computer_setting(param)
 
         return ret_val
 

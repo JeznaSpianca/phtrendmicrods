@@ -24,7 +24,7 @@
        <p style="font-size:15px;color: white"> Alert </p>
        <table>
        {% for key, dt in data.items %}
-       {% if dt|length != 0 %}
+       {% if dt|stringformat:"s"|length != 0 %}
         <tr> 
            <td style="border: 1px solid white;padding:4px">{{ key }} </td><td style="border: 1px solid white;padding:4px"> {{ dt }} </td>
         </tr>

@@ -154,9 +154,9 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "describe_computer",
-            "identifier": "describe_computer",
-            "description": "Describe a computer",
+            "action": "describe_computer_setting",
+            "identifier": "describe_computer_setting",
+            "description": "Describe a computer setting",
             "verbose": "",
             "type": "generic",
             "read_only": false,
@@ -170,6 +170,16 @@
                     "value_list": [],
                     "default": "",
                     "order": 2
+                },
+                "setting": {
+                    "description": "Setting name.",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
                 }
             },
             "output": [
@@ -177,7 +187,14 @@
                     "data_path": "action_result.parameter.compid",
                     "data_type": "string",
                     "contains": [],
-                    "column_name": "accountname",
+                    "column_name": "setting",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.setting",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "setting",
                     "column_order": 1
                 },
                 {
@@ -201,7 +218,67 @@
 
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "csetting_view.display_csetting",
+                "title": "Describe computer"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "describe_computer",
+            "identifier": "describe_computer",
+            "description": "Describe a computer",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "compid": {
+                    "description": "Computer ID.",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.compid",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "compid",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "comp_view.display_comp",
+                "title": "Describe computer"
             },
             "versions": "EQ(*)"
         },
@@ -229,7 +306,7 @@
                     "data_path": "action_result.parameter.compid",
                     "data_type": "string",
                     "contains": [],
-                    "column_name": "accountname",
+                    "column_name": "compid",
                     "column_order": 1
                 },
                 {
@@ -358,7 +435,11 @@
 
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "lcomp_view.display_list",
+                "title": "List computers"
             },
             "versions": "EQ(*)"
         },
@@ -1203,21 +1284,21 @@
                     "data_path": "action_result.parameter.id",
                     "data_type": "string",
                     "contains": [],
-                    "column_name": "alertid",
+                    "column_name": "id",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.maxItems",
                     "data_type": "string",
                     "contains": [],
-                    "column_name": "alertid",
+                    "column_name": "maxItems",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.op",
                     "data_type": "string",
                     "contains": [],
-                    "column_name": "alertid",
+                    "column_name": "op",
                     "column_order": 0
                 },
                 {
@@ -1543,7 +1624,7 @@
                     "data_path": "action_result.parameter.targetid",
                     "data_type": "string",
                     "contains": [],
-                    "column_name": "alertid",
+                    "column_name": "targetid",
                     "column_order": 0
                 },
                 {
@@ -1773,7 +1854,11 @@
 
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 15,
+                "height": 5,
+                "view": "altype_view.display_altype",
+                "title": "Display alert type"
             },
             "versions": "EQ(*)"
         },
