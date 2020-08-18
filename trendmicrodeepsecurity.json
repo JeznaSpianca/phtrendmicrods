@@ -64,6 +64,109 @@
             "versions": "EQ(*)"
         },
         {
+            "action": "get_log_inspection_events",
+            "identifier": "get_log_inspection_events",
+            "description": "Gets the specified number of log inspection evensts.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "accountname": {
+                    "description": "Name of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "username": {
+                    "description": "Username of DS account",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "passwd": {
+                    "description": "User password",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "eventsnum": {
+                    "description": "Number of events to return",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.passwd",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "passwd",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.accountname",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "accountname",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.username",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.eventsnum",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "eventsnum",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
             "action": "getevents",
             "identifier": "getevents",
             "description": "Gets antimalware events from DS manager.",
@@ -370,41 +473,6 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "listpolicies",
-            "identifier": "listpolicies",
-            "description": "Gets policies from DS manager.",
-            "verbose": "",
-            "type": "generic",
-            "read_only": false,
-            "parameters": {
-            },
-            "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "status",
-                    "column_order": 0
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric"
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric"
-                }
-
-            ],
-            "render": {
-                "type": "table"
-            },
-            "versions": "EQ(*)"
-        },
-        {
             "action": "listcomputers",
             "identifier": "listcomputers",
             "description": "List computers.",
@@ -447,6 +515,197 @@
             "action": "listpolicies",
             "identifier": "listpolicies",
             "description": "Gets policies from DS manager.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list_global_rules",
+            "identifier": "list_global_rules",
+            "description": "Lists all global rules.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "delete_global_rule",
+            "identifier": "delete_global_rule",
+            "description": "Delete a global rule.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "ruleID": {
+                    "description": "ID of the rule to delete.",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.ruleID",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "ruleID",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "add_global_rule",
+            "identifier": "add_global_rule",
+            "description": "Add a global rule.",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "sha256": {
+                    "description": "Sha256 hash of application.",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "description": {
+                    "description": "Description of the rule.",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.sha256",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "sha256",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "description",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list_default_settings",
+            "identifier": "list_default_settings",
+            "description": "Lists all default policy settings.",
             "verbose": "",
             "type": "generic",
             "read_only": false,
