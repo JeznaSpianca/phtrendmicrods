@@ -1390,99 +1390,51 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, "Bla")
 
-    def handle_action(self, param):  # noqa: C901
-        ret_val = phantom.APP_SUCCESS
-
+    def handle_action(self, param):
         # Get the action that we are supposed to execute for this App Run
-        action_id = self.get_action_identifier()
 
         self.debug_print("action_id", self.get_action_identifier())
 
-        if action_id == 'test_connectivity':
-            ret_val = self._handle_test_connectivity(param)
+        # Dictionary mapping each action with its corresponding actions
+        action_mapping = {
+            'test_connectivity': self._handle_test_connectivity,
+            'getevents': self._handle_getevents,
+            'getwebevents': self._handle_getwebevents,
+            'getalerts': self._handle_getalerts,
+            'getimevents': self._handle_getimevents,
+            'getevtime': self._handle_getevtime,
+            'list_alert_types': self._handle_list_alert_types,
+            'reset_alert_type': self._handle_reset_alert_type,
+            'describe_alert_type': self._handle_describe_alert_type,
+            'modify_alert_type': self._handle_modify_alert_type,
+            'dismiss_alert': self._handle_dismiss_alert,
+            'describe_alert': self._handle_describe_alert,
+            'dismiss_alert_one_target': self._handle_dismiss_alert_one_target,
+            'list_event_based_tasks': self._handle_list_event_based_tasks,
+            'delete_ev_based_task': self._handle_delete_ev_based_task,
+            'list_report_templates': self._handle_list_report_templates,
+            'listpolicies': self._handle_listpolicies,
+            'listcomputers': self._handle_listcomputers,
+            'get_comp_fw_rules': self._handle_get_comp_fw_rules,
+            'list_comp_groups': self._handle_list_comp_groups,
+            'getwevtime': self._handle_getwevtime,
+            'describe_computer': self._handle_describe_computer,
+            'describe_computer_setting': self._handle_describe_computer_setting,
+            'get_log_inspection_events': self._handle_get_log_inspection_events,
+            'list_default_settings': self._handle_list_default_settings,
+            'list_global_rules': self._handle_list_global_rules,
+            'add_global_rule': self._handle_add_global_rule,
+            'delete_global_rule': self._handle_delete_global_rule
+        }
 
-        elif action_id == 'getevents':
-            ret_val = self._handle_getevents(param)
+        action = self.get_action_identifier()
+        action_execution_status = phantom.APP_SUCCESS
 
-        elif action_id == 'getwebevents':
-            ret_val = self._handle_getwebevents(param)
+        if action in action_mapping.keys():
+            action_function = action_mapping[action]
+            action_execution_status = action_function(param)
 
-        elif action_id == 'getalerts':
-            ret_val = self._handle_getalerts(param)
-
-        elif action_id == 'getimevents':
-            ret_val = self._handle_getimevents(param)
-
-        elif action_id == 'getevtime':
-            ret_val = self._handle_getevtime(param)
-
-        elif action_id == 'list_alert_types':
-            ret_val = self._handle_list_alert_types(param)
-
-        elif action_id == 'reset_alert_type':
-            ret_val = self._handle_reset_alert_type(param)
-
-        elif action_id == 'describe_alert_type':
-            ret_val = self._handle_describe_alert_type(param)
-
-        elif action_id == 'modify_alert_type':
-            ret_val = self._handle_modify_alert_type(param)
-
-        elif action_id == 'dismiss_alert':
-            ret_val = self._handle_dismiss_alert(param)
-
-        elif action_id == 'describe_alert':
-            ret_val = self._handle_describe_alert(param)
-
-        elif action_id == 'dismiss_alert_one_target':
-            ret_val = self._handle_dismiss_alert_one_target(param)
-
-        elif action_id == 'list_event_based_tasks':
-            ret_val = self._handle_list_event_based_tasks(param)
-
-        elif action_id == 'delete_ev_based_task':
-            ret_val = self._handle_delete_ev_based_task(param)
-
-        elif action_id == 'list_report_templates':
-            ret_val = self._handle_list_report_templates(param)
-
-        elif action_id == 'listpolicies':
-            ret_val = self._handle_listpolicies(param)
-
-        elif action_id == 'listcomputers':
-            ret_val = self._handle_listcomputers(param)
-
-        elif action_id == 'get_comp_fw_rules':
-            ret_val = self._handle_get_comp_fw_rules(param)
-
-        elif action_id == 'list_comp_groups':
-            ret_val = self._handle_list_comp_groups(param)
-
-        elif action_id == 'getwevtime':
-            ret_val = self._handle_getwevtime(param)
-
-        elif action_id == 'describe_computer':
-            ret_val = self._handle_describe_computer(param)
-
-        elif action_id == 'describe_computer_setting':
-            ret_val = self._handle_describe_computer_setting(param)
-
-        elif action_id == 'get_log_inspection_events':
-            ret_val = self._handle_get_log_inspection_events(param)
-
-        elif action_id == 'list_default_settings':
-            ret_val = self._handle_list_default_settings(param)
-
-        elif action_id == 'list_global_rules':
-            ret_val = self._handle_list_global_rules(param)
-
-        elif action_id == 'add_global_rule':
-            ret_val = self._handle_add_global_rule(param)
-
-        elif action_id == 'delete_global_rule':
-            ret_val = self._handle_delete_global_rule(param)
-
-        return ret_val
+        return action_execution_status
 
     def initialize(self):
         # Load the state in initialize, use it to store data
