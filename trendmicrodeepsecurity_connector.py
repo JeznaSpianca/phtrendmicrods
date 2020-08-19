@@ -339,6 +339,37 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS, sid)
 
+    def _handle_list_software_changes(self, param):
+        """
+        This function list all software changes.
+        """
+
+        # use self.save_progress(...) to send progress messages back to the platform
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        # Preparing headers
+        headers = {'api-version': self._api_ver, 'api-secret-key': self._auth_token}
+
+        # API call to list all software changes
+        ret_val, response = self._make_rest_call_new(endpoint='/softwarechanges', action_result=action_result, method='get', headers=headers)
+
+        # If the call fails
+        if phantom.is_fail(ret_val):
+           return action_result.get_status()
+
+        # Add the response into the data section
+        action_result.add_data(response)
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+        summary['events'] = "Bla"
+
+        # Return success, no need to set the message, only the status
+        # BaseConnector will create a textual message based off of the summary dictionary
+        return action_result.set_status(phantom.APP_SUCCESS, "Bla")
+
     def _handle_listcomputers(self, param):
         """
         This function list all computers.
@@ -1424,7 +1455,8 @@ class TrendMicroDeepSecurityConnector(BaseConnector):
             'list_default_settings': self._handle_list_default_settings,
             'list_global_rules': self._handle_list_global_rules,
             'add_global_rule': self._handle_add_global_rule,
-            'delete_global_rule': self._handle_delete_global_rule
+            'delete_global_rule': self._handle_delete_global_rule,
+            'list_software_changes': self._handle_list_software_changes
         }
 
         action = self.get_action_identifier()
